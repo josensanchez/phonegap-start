@@ -90,7 +90,11 @@ var app = {
             }else{
                 alert(data.estado);
             }
-        }});
+        }, statusCode: {
+                404: function() {
+                alert( "page not found" );
+                }
+        }, error: function(jqXHR, textStatus, errorThrown ){alert("falló " + jqXHR + ": "+textStatus+" - "+ errorThrown )}});
     },
     updateState: function(){
         app.getVisitas(false);
