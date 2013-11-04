@@ -75,8 +75,8 @@ var app = {
         $(".page").hide();
         $("#"+page).show(500);
     },
-    server: "http://192.168.0.35/visitas/acciones.php",
-    uriEncuesta: "http://192.168.0.35/visitas/drafts/encuesta_edit.php",
+    server: "http://josensanchez.dyndns.org/visitas/acciones.php",
+    uriEncuesta: "http://josensanchez.dyndns.org/visitas/drafts/encuesta_edit.php",
     login: function(){
         var strUsuario = $('#nombre').val();
         var strClave = $('#clave').val();
