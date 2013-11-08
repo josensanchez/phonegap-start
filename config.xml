@@ -7,7 +7,7 @@
     <author email="jose@sancorp.co" href="http://josensanchez.dyndns.org/visitas">
         Sancorp Logistica.
     </author>
-    <preference name="phonegap-version" value="3.1.0" />
+    <preference name="phonegap-version" value="2.5.0" />
     <feature name="http://api.phonegap.com/1.0/device" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
@@ -51,7 +51,6 @@
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     <feature name="http://api.phonegap.com/1.0/notification"/>
-    <access origin="http://127.0.0.1*" />
     <access subdomains="true" uri="http://josensanchez.dyndns.org/" />
     <access subdomains="true" uri="*" />
 </widget>
