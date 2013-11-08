@@ -1,66 +1,63 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
+<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.1.0.css" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
-		<script type="text/javascript" charset="utf-8" src="jquery.mobile/jquery-1.7.2.min"></script>
-	  	<script type="text/javascript" charset="utf-8" src="jquery.mobile/jquery.mobile-1.1.0.js"></script>
-        <title>Service</title>
-    </head>
-    <body>
-        <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="js/leaflet.js"></script>
-        <script type="text/javascript" src="js/geolocation.js"></script>
-        <div class="content">
-    		<div class="page" id="login">
-    			<center><img src="img/logo.png" /></center>
-    			<input placeholder="nombre" type="text" id="nombre" />
-    			<input placeholder="clave" type="password" id="clave" />
-    			<button onClick="app.login()" >iniciar</button>
-    		</div>
-    		<div class="page" id="mapa">
-			  	<center><div id="map" style="width: 400px; height: 560px"></div></center>
-			  	<button onClick="app.getVisitas(true);" >Ver Visitas</button>
-    		</div>
-    		<div class="page" id="visitas">
-    			<br/><br/>
-    			<div id="list_visitas"></div>
-    			<br/><br/>
-    			<button onClick="app.goTo('mapa');" >volver</button>
-    		</div>
-    		<div class="page" id="visita">
-				<br/><br/>
-    			<div id="item_visita"></div>
-    			<br/><br/>
-    			<button onClick="app.goTo('visitas');" >volver</button>
-    		</div>
-    	</div>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-		<script type="text/javascript" src="js/test.js"></script>
-    </body>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+		<title>Training App</title>
+		<link rel="stylesheet" href="assets/css/master.css" type="text/css" media="screen" />
+		
+		<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/xui.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/lawnchair/adaptors/DOMStorageAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/dsl.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="assets/js/app.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+	<body>
+ 		<div id="title_bar">Phone<strong>Gap</strong> Training App</div>
+
+		<div id="welcome" class="view">
+		  <div class="app_button" id="map_button">Show My Location</div>
+  	      <div class="app_button" id="settings_button">Settings</div>
+		</div>
+
+		<div id="map" class="view">
+		  <div class="map_image">
+              <img id="static_map" src="assets/img/staticmap.png">
+		  </div>
+		  <p>This is where you are</p>
+		  <div class="app_button" id="welcome_button">Go Back</div>
+		</div>
+
+		<div id="settings" class="view">
+		  <form id="settings_form">
+		    <fieldset>
+		      <legend>Map Type</legend>
+			  <input type="radio" name="map" value="roadmap" checked>Road Map<br/>
+		      <input type="radio" name="map" value="satellite">Satellite<br/>
+		      <input type="radio" name="map" value="terrain">Terrain<br/>
+		      <input type="radio" name="map" value="hybrid">Hybrid<br/>
+		    </fieldset>
+		    <fieldset>
+		      <legend>Zoom Level</legend>
+  		      <input type="radio" name="zoom" value="10">Super Far<br/>
+  		      <input type="radio" name="zoom" value="12">Far<br/>
+  		      <input type="radio" name="zoom" value="15" checked>Normal<br/>
+  		      <input type="radio" name="zoom" value="18">Close<br/>
+  		      <input type="radio" name="zoom" value="20">Super Close<br/>
+  		     </fieldset>
+		      <button id="save_button">Save</button>
+	      </form>
+		</div>
+
+	</body>
 </html>
