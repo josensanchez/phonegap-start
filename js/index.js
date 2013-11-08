@@ -125,8 +125,6 @@ var app = {
         app.toShow = blnShow;
         $.ajax({url: app.server, dataType: 'json', data: {accion:"visitas",tecnico: app.idTecnico}, success: function(data) {
             if(data.estado=='OK'){
-                app.clearMap();
-                app.updateMarker();
                 var oldVisitas = app.visitas; 
                 app.visitas = data.visitas;
                 var visitas_html = '<ul data-role="listview" data-filter="true" data-filter-placeholder="Buscar Visitas..." data-count-theme="b" data-inset="true">';
@@ -143,6 +141,8 @@ var app = {
                 if(app.toShow || oldVisitas.length < app.visitas.length){
                     app.goTo("visitas");
                     if(oldVisitas.length < app.visitas.length){
+                        app.clearMap();
+                        app.updateMarker();
                         app.beep();
                     }
                 }

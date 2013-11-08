@@ -18,7 +18,7 @@ var geo = {
             clearWatch();  // sets watchID = null;
         }
         console.log("Watching geolocation . . .");
-        var options = { frequency: 3000, maximumAge: 5000, timeout: 3000, enableHighAccuracy: true };
+        var options = { frequency: 30000, maximumAge: 60000, timeout: 30000, enableHighAccuracy: true };
         geo.watchID = navigator.geolocation.watchPosition(geo.wsuccess, geo.wfail, options);
     },
     precision : 10,
@@ -26,7 +26,6 @@ var geo = {
     accuratedItems:0,
     position: {lat: -34.58015376211612, lng: -58.41490745544433},
     wsuccess: function (pos){
-        alert(pos.coords.latitude);
         geo.position = {lat: pos.coords.latitude, lng: pos.coords.longitude};
     },
     wfail: function (error){
