@@ -12,7 +12,7 @@
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
+    <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="true" />
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />
@@ -51,6 +51,8 @@
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     <feature name="http://api.phonegap.com/1.0/notification"/>
+    <access subdomains="true" origin="http://josensanchez.dyndns.org/" />
     <access subdomains="true" uri="http://josensanchez.dyndns.org/" />
+    <access subdomains="true" origin="*" />
     <access subdomains="true" uri="*" />
 </widget>

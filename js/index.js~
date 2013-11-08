@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-L.Icon.Default.imagePath = 'img/';
+//L.Icon.Default.imagePath = 'img/';
 var map = L.map('map').setView([-34.58015376211612, -58.41490745544433  ], 13);
 L.tileLayer('http://{s}.tile.cloudmade.com/{key}/22677/256/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade',
@@ -33,6 +33,12 @@ var UsuarioIcon = L.Icon.Default.extend({
            //options: {iconUrl: 'assets/images/marker-icon-red.png' }
        });
 var usuarioIcon = new UsuarioIcon();
+
+
+var UsuarioLocation = new L.LatLng(-34.59995376211612, -58.42990745544433);
+        var usuario = new L.Marker(UsuarioLocation, {icon: usuarioIcon});
+        usuario.bindPopup('<b>Usuario1</b><p>tiene 3 visitas asignadas</p>');
+        map.addLayer(usuario);
 
 var app = {
     myMarker: null,
@@ -93,18 +99,19 @@ var app = {
         }});
     },
     updateState: function(){
-        app.getVisitas(false);
         app.updateMarker();
+        app.getVisitas(false);
     },
     updateMarker: function(){
         if(!geo.position) return;
         var loc = new L.LatLng(geo.position.lat, geo.position.lng);
         if(!app.myMarker){
             app.myMarker = L.marker(loc, {icon: usuarioIcon});
+            app.myMarker.bindPopup('<b>Visita: una direccion ficticia 1234 </b><br/><button onClick="app.getVisita(1)" >Ir a visita</button>');
             map.addLayer(app.myMarker);
+            map.setView([loc.lat, loc.lng], 13);
         }else{
             app.myMarker.setLatLng(loc);
-            map.setView([loc.lat, loc.lng], 13);
         }
     },
     clearMap: function(){
@@ -125,8 +132,6 @@ var app = {
         app.toShow = blnShow;
         $.ajax({url: app.server, dataType: 'json', data: {accion:"visitas",tecnico: app.idTecnico}, success: function(data) {
             if(data.estado=='OK'){
-                app.clearMap();
-                app.updateMarker();
                 var oldVisitas = app.visitas; 
                 app.visitas = data.visitas;
                 var visitas_html = '<ul data-role="listview" data-filter="true" data-filter-placeholder="Buscar Visitas..." data-count-theme="b" data-inset="true">';
@@ -134,6 +139,7 @@ var app = {
                     visita = app.visitas[i];
                     var loc = new L.LatLng(visita.lat, visita.lng);
                     visiMarker = L.marker(loc, {icon: redIcon});
+                    visiMarker.bindPopup('<b>Visita: '+ visita.direccion +'</b><br/><button onClick="app.getVisita('+i+')" >Ir a visita</button>');
                     map.addLayer(visiMarker);
                     var intDistancia = geo.getDistance(geo.position, visita);
                     var strDistancia = (""+intDistancia).substring(0,4);
@@ -143,6 +149,8 @@ var app = {
                 if(app.toShow || oldVisitas.length < app.visitas.length){
                     app.goTo("visitas");
                     if(oldVisitas.length < app.visitas.length){
+                        app.clearMap();
+                        app.updateMarker();
                         app.beep();
                     }
                 }
@@ -161,3 +169,6 @@ var app = {
         $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.loadURLEncuesta('+visita.id_visita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
     }
 };
+
+
+app.goTo("mapa");
