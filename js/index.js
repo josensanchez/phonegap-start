@@ -65,6 +65,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('backbutton', this.onBackButton, false);
     },
     // deviceready Event Handler
     //
@@ -74,6 +75,32 @@ var app = {
         app.receivedEvent('deviceready');
         app.vibrate();
         app.beep();
+    },
+    onBackButton: function(e){
+        switch(app.strPag){
+            case "login":
+                navigator.app.exitApp();
+                break;
+            case "visita":
+                app.goTo("visitas");
+                break;
+            case "mapa":
+                    navigator.notification.confirm(
+                    '¿Desea finalizar la sesión?',// message
+                         cerrarSesion,              // callback to invoke with index of button pressed
+                    'Cerrar Sesión',            // title
+                    'cancelar,Salir'          // buttonLabels
+                );
+                break;
+            case "pasajero":
+                alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje aceptado.");
+                break;
+            case "bordo":
+                alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje Iniciado.");
+                break;
+            default:
+                app.goTo("mapa");
+        }
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -174,31 +201,7 @@ var app = {
 };
 
 document.addEventListener("backbutton", function(e){
-    switch(app.strPag){
-	case "login":
-		navigator.app.exitApp();
-		break;
-	case "visita":
-		app.goTo("visitas");
-		break;
-	case "mapa":
-	        navigator.notification.confirm(
-		    '¿Desea finalizar la sesión?',// message
-	             cerrarSesion,              // callback to invoke with index of button pressed
-		    'Cerrar Sesión',            // title
-		    'cancelar,Salir'          // buttonLabels
-		);
-		break;
-	case "pasajero":
-		alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje aceptado.");
-		break;
-	case "bordo":
-		alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje Iniciado.");
-		break;
-	default:
-		app.goTo("mapa");
-    }
-}, false);
+ false);
 
 
 app.goTo("mapa");
