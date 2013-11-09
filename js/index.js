@@ -77,6 +77,8 @@ var app = {
         app.beep();
     },
     onBackButton: function(e){
+        alert(app.strPag);
+        return;
         switch(app.strPag){
             case "login":
                 navigator.app.exitApp();
