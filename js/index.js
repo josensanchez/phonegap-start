@@ -45,6 +45,7 @@ var app = {
     timerId: null,
     idTecnico: null,
     visitas: null,
+    strPag:"login",
     vibrate: function(){
         //if(typeof(cordova.exec) == typeof(Function))
           navigator.notification.vibrate(100);  
@@ -71,6 +72,7 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        app.vibrate();
         app.beep();
     },
     // Update DOM on a Received Event
@@ -80,6 +82,7 @@ var app = {
     goTo: function(page){
         $(".page").hide();
         $("#"+page).show(500);
+        app.strPag = page;
     },
     server: "http://josensanchez.dyndns.org/visitas/acciones.php",
     uriEncuesta: "http://josensanchez.dyndns.org/visitas/drafts/encuesta_edit.php",
@@ -90,7 +93,7 @@ var app = {
             if(data.estado=='OK'){
                 geo.WatchPosition();
                 app.idTecnico = data.tecnico;
-                app.goTo("mapa");
+                app.goTo("visitas");
                 app.timerId = setInterval(app.updateState,5000);
                 app.updateState();
             }else{
@@ -169,6 +172,33 @@ var app = {
         $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.loadURLEncuesta('+visita.id_visita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
     }
 };
+
+document.addEventListener("backbutton", function(e){
+    switch(app.strPag){
+	case "login":
+		navigator.app.exitApp();
+		break;
+	case "visita":
+		app.goTo("visitas");
+		break;
+	case "mapa":
+	        navigator.notification.confirm(
+		    '¿Desea finalizar la sesión?',// message
+	             cerrarSesion,              // callback to invoke with index of button pressed
+		    'Cerrar Sesión',            // title
+		    'cancelar,Salir'          // buttonLabels
+		);
+		break;
+	case "pasajero":
+		alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje aceptado.");
+		break;
+	case "bordo":
+		alert("En esta versión no se permite salir de esta pantalla mientras haya un viaje Iniciado.");
+		break;
+	default:
+		app.goTo("mapa");
+    }
+}, false);
 
 
 app.goTo("mapa");

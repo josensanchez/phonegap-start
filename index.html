@@ -27,29 +27,30 @@
         <link rel="stylesheet" type="text/css" href="assets/leaflet/leaflet.css" />
 		<script type="text/javascript" charset="utf-8" src="jquery.mobile/jquery-1.7.2.min"></script>
 	  	<script type="text/javascript" charset="utf-8" src="jquery.mobile/jquery.mobile-1.1.0.js"></script>
-        <title>Service</title>
-    </head>
-    <body>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="assets/leaflet/leaflet.js"></script>
         <script type="text/javascript" src="js/geolocation.js"></script>
+        <title>Service</title>
+    </head>
+    <body>
+
         <div class="content">
     		<div class="page" id="login">
-    			<center><img src="img/logo.png" /></center>
+    			<center><img src="img/logo.png" width="43%" height="43%"/></center>
     			<input placeholder="nombre" type="text" id="nombre" />
     			<input placeholder="clave" type="password" id="clave" />
     			<button onClick="app.login()" >iniciar</button>
     		</div>
     		<div class="page" id="mapa">
-			  	<center><div id="map" style="width: 400px; height: 560px"></div></center>
+			  	<center><div id="map" style="width: 100%; height: 245px"></div></center>
 			  	<button onClick="app.getVisitas(true);" >Ver Visitas</button>
     		</div>
     		<div class="page" id="visitas">
     			<br/><br/>
     			<div id="list_visitas"></div>
     			<br/><br/>
-    			<button onClick="app.goTo('mapa');" >volver</button>
+    			<button onClick="app.goTo('mapa');" >ver Mapa</button>
     		</div>
     		<div class="page" id="visita">
 				<br/><br/>
