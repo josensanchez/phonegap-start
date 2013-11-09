@@ -51,7 +51,6 @@
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     <feature name="http://api.phonegap.com/1.0/notification"/>
-    <feature id="blackberry.ui.dialog" />
     <access subdomains="true" origin="http://josensanchez.dyndns.org/" />
     <access subdomains="true" uri="http://josensanchez.dyndns.org/" />
     <access subdomains="true" origin="*" />
