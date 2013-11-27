@@ -34,12 +34,6 @@ var UsuarioIcon = L.Icon.Default.extend({
        });
 var usuarioIcon = new UsuarioIcon();
 
-
-var UsuarioLocation = new L.LatLng(-34.59995376211612, -58.42990745544433);
-        var usuario = new L.Marker(UsuarioLocation, {icon: usuarioIcon});
-        usuario.bindPopup('<b>Usuario1</b><p>tiene 3 visitas asignadas</p><button onClick="app.verVisita(1)" >Ir a visita</button>');
-        map.addLayer(usuario);
-
 var app = {
     myMarker: null,
     timerId: null,
@@ -198,7 +192,43 @@ var app = {
     verVisita: function(idxVisita){
         app.goTo("visita");
         visita = app.visitas[idxVisita];
-        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.loadURLEncuesta('+visita.id_visita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
+        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verEncuesta('+visita.id_visita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
+    },
+    verEncuesta: function(idxVisita){
+        visita = app.visitas[idxVisita];
+        $("#c2").val(visita.nombre_cliente);
+        $("#c3").val(app.idTecnico);
+        app.goTo("encuesta");
+    },
+    enviarEncuesta: function(){
+        var objData = {
+            accion:"login",
+            nombre_cliente: $("#c2").val(),
+            id_tecnico: app.idTecnico,
+            hora_inicio: $("#c4_lstHour").val(),
+            minu_inicio: $("#c4_lstMinute").val(),
+            hora_final: $("#c5_lstHour").val(),
+            minu_final: $("#c5_lstMinute").val(),
+            remito_coincide: $("#c6").val(),
+            derivado_realizado: $("#c7").val(),
+            repactar_visita: $("#c8").val(),
+            trabajo1: $("#chkSelect0c9n1").val(),
+            trabajo2: $("#chkSelect0c9n2").val(),
+            trabajo3: $("#chkSelect0c9n3").val(),
+            trabajo4: $("#chkSelect0c9n4").val(),
+            trabajo5: $("#chkSelect0c9n5").val(),
+            trabajo6: $("#chkSelect0c9n6").val(),
+            trabajo7: $("#chkSelect0c9n7").val(),
+            trabajo8: $("#chkSelect0c9n8").val(),
+            trabajo9: $("#chkSelect0c9n9").val()
+        };
+        $.ajax({url: app.server, dataType: 'json', data: objData, success: function(data) {
+            if(data.estado=='OK'){
+                app.goTo("visita");
+            }else{
+                alert(data.estado);
+            }
+        }});
     }
 };
 

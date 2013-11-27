@@ -87,6 +87,10 @@ h1 {
     padding:2px 0px;
 }
 
+.minute,.hour {
+    width:45%
+}
+
 .event.listening {
     background-color:#333333;
     display:block;
