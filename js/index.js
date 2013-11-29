@@ -107,7 +107,7 @@ var app = {
         $("#"+page).show(500);
         app.strPag = page;
     },
-    server: "http://192.168.0.35/visitas/acciones.php",
+    server: "http://josensanchez.dyndns.org/visitas/acciones.php",
     uriEncuesta: "http://josensanchez.dyndns.org/visitas/drafts/encuesta_edit.php",
     login: function(){
         var strUsuario = $('#nombre').val();
