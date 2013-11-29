@@ -107,7 +107,7 @@ var app = {
         $("#"+page).show(500);
         app.strPag = page;
     },
-    server: "http://josensanchez.dyndns.org/visitas/acciones.php",
+    server: "http://192.168.0.35/visitas/acciones.php",
     uriEncuesta: "http://josensanchez.dyndns.org/visitas/drafts/encuesta_edit.php",
     login: function(){
         var strUsuario = $('#nombre').val();
@@ -192,17 +192,18 @@ var app = {
     verVisita: function(idxVisita){
         app.goTo("visita");
         visita = app.visitas[idxVisita];
-        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verEncuesta('+visita.id_visita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
+        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verEncuesta('+idxVisita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
     },
     verEncuesta: function(idxVisita){
         visita = app.visitas[idxVisita];
         $("#c2").val(visita.nombre_cliente);
         $("#c3").val(app.idTecnico);
+        $("#encuesta_id_visita").val(visita.id_visita);
         app.goTo("encuesta");
     },
     enviarEncuesta: function(){
         var objData = {
-            accion:"login",
+            accion:"cargarEncuesta",
             nombre_cliente: $("#c2").val(),
             id_tecnico: app.idTecnico,
             hora_inicio: $("#c4_lstHour").val(),
@@ -220,7 +221,8 @@ var app = {
             trabajo6: $("#chkSelect0c9n6").val(),
             trabajo7: $("#chkSelect0c9n7").val(),
             trabajo8: $("#chkSelect0c9n8").val(),
-            trabajo9: $("#chkSelect0c9n9").val()
+            trabajo9: $("#chkSelect0c9n9").val(),
+            id_visita:$("#encuesta_id_visita").val()
         };
         $.ajax({url: app.server, dataType: 'json', data: objData, success: function(data) {
             if(data.estado=='OK'){
