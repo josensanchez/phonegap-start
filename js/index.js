@@ -117,7 +117,7 @@ var app = {
                 geo.WatchPosition();
                 app.idTecnico = data.tecnico;
                 app.goTo("visitas");
-                $("#c3").append("<option value='"+ app.idTecnico +"'>"+ $("#nombre").val() +"</option>");
+                $("#c3").append("<option value='"+ app.idTecnico +"' selected >"+ $("#nombre").val() +"</option>").selectmenu('refresh');
                 app.timerId = setInterval(app.updateState,5000);
                 app.updateState();
             }else{
