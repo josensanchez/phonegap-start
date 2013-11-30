@@ -157,7 +157,7 @@ var app = {
     toShow: false,
     getVisitas: function(blnShow){
         app.toShow = blnShow;
-        $.ajax({url: app.server, dataType: 'json', data: {accion:"visitas",tecnico: app.idTecnico, lat: geo.lat, lng: geo.lng}, success: function(data) {
+        $.ajax({url: app.server, dataType: 'json', data: {accion:"visitas",tecnico: app.idTecnico, lat: geo.position.lat, lng: geo.position.lng}, success: function(data) {
             if(data.estado=='OK'){
                 var oldVisitas = app.visitas; 
                 app.visitas = data.visitas;
