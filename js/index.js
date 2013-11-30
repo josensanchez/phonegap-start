@@ -42,7 +42,7 @@ var app = {
     strPag:"login",
     vibrate: function(){
         //if(typeof(cordova.exec) == typeof(Function))
-          navigator.notification.vibrate(100);  
+          navigator.notification.vibrate(500);  
     },
     beep: function(){
         //if(typeof(cordova.exec) == typeof(Function))
@@ -117,6 +117,7 @@ var app = {
                 geo.WatchPosition();
                 app.idTecnico = data.tecnico;
                 app.goTo("visitas");
+                $("#c3").$("#elementid").append("<option value='"+ app.idTecnico +"'>"+ $("#nombre").val() +"</option>");
                 app.timerId = setInterval(app.updateState,5000);
                 app.updateState();
             }else{
@@ -197,7 +198,6 @@ var app = {
     verEncuesta: function(idxVisita){
         visita = app.visitas[idxVisita];
         $("#c2").val(visita.nombre_cliente);
-        $("#c3").val(app.idTecnico);
         $("#encuesta_id_visita").val(visita.id_visita);
         app.goTo("encuesta");
     },
