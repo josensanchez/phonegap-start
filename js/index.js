@@ -11,7 +11,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANYSSS
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -34,18 +34,28 @@ var UsuarioIcon = L.Icon.Default.extend({
        });
 var usuarioIcon = new UsuarioIcon();
 
+var SubwayIcon = L.Icon.Default.extend({
+           options:{iconUrl:'img/railway-station-icon.gif',shadowSize:   [28, 28],shadowAnchor: [14, 27], iconSize: [28, 28], iconAnchor:   [14, 27]}
+           //options: {iconUrl: 'assets/images/marker-icon-red.png' }
+       });
+var subwayIcon = new SubwayIcon();
+
+
 var app = {
     myMarker: null,
+    subwayMarker: null,
     timerId: null,
     idTecnico: null,
     visitas: null,
     strPag:"login",
+    setView2Visita: false,
     vibrate: function(){
-        //if(typeof(cordova.exec) == typeof(Function))
-          navigator.notification.vibrate(500);  
+        if(typeof(navigator.notification.vibrate) == typeof(Function))
+          navigator.notification.vibrate(1000);  
     },
     beep: function(){
-        //if(typeof(cordova.exec) == typeof(Function))
+        //if(typeof(navigator.notification.beep) == typeof(Function))
+        if(navigator.notification)
           navigator.notification.beep();
     },
     // Application Constructor
@@ -105,6 +115,7 @@ var app = {
     goTo: function(page){
         $(".page").hide();
         $("#"+page).show(500);
+        app.setView2Visita = false;
         app.strPag = page;
     },
     server: "http://josensanchez.dyndns.org/visitas/acciones.php",
@@ -126,6 +137,7 @@ var app = {
         }});
     },
     updateState: function(){
+        console.log("updateState");
         app.updateMarker();
         app.getVisitas(false);
     },
@@ -134,12 +146,12 @@ var app = {
         var loc = new L.LatLng(geo.position.lat, geo.position.lng);
         if(!app.myMarker){
             app.myMarker = L.marker(loc, {icon: usuarioIcon});
-            app.myMarker.bindPopup('<b>Visita: una direccion ficticia 1234 </b><br/><button onClick="app.getVisita(1)" >Ir a visita</button>');
             map.addLayer(app.myMarker);
-            map.setView([loc.lat, loc.lng], 13);
         }else{
             app.myMarker.setLatLng(loc);
         }
+        if(!app.setView2Visita)
+            map.setView([loc.lat, loc.lng], 13);
     },
     clearMap: function(){
         for(i in map._layers) {
@@ -153,6 +165,7 @@ var app = {
             }
         }
         app.myMarker = null;
+        app.subwayMarker = null;
     },
     toShow: false,
     getVisitas: function(blnShow){
@@ -193,7 +206,7 @@ var app = {
     verVisita: function(idxVisita){
         app.goTo("visita");
         visita = app.visitas[idxVisita];
-        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verEncuesta('+idxVisita+');" data-clear-btn="true" >Competar Encuesta</a></li></ul>').trigger("create");
+        $("#item_visita").html('<ul data-role="listview" data-inset="true"><li class="ui-field-contain"><label for="direccion">Direccion:</label><input name="direccion" id="direccion" value="'+ visita.direccion +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="nombre">Cliente:</label><input name="nombre" id="nombre" value="'+ visita.nombre_cliente +'" data-clear-btn="true" type="text"></li><li class="ui-field-contain"><label for="telefono">Telefono:</label><a name="telefono" id="telefono" href="tel:'+ visita.telefono_cliente +'" data-clear-btn="true" type="text">'+ visita.telefono_cliente +'</a></li><li class="ui-field-contain"><label for="textarea2">Observaciones:</label><textarea cols="40" rows="8" name="textarea2" id="textarea2">'+visita.observaciones+'</textarea></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verEncuesta('+idxVisita+');" data-clear-btn="true" >Competar Encuesta</a></li><li class="ui-field-contain"><a target="_blank" name="ir" id="ir" href="#" onClick="app.verVisitaMapa('+idxVisita+');" data-clear-btn="true" >Ver visita en el mapa</a></li></ul>').trigger("create");
     },
     verEncuesta: function(idxVisita){
         visita = app.visitas[idxVisita];
@@ -231,6 +244,23 @@ var app = {
                 alert(data.estado);
             }
         }});
+    },
+    verVisitaMapa: function(idxVisita){
+        app.goTo("mapa");
+        app.setView2Visita = true;
+        $("#btnVerVisita").show();
+        $("#btnVerVisita").unbind( "click" );
+        $("#btnVerVisita").click(function(){app.verVisita(idxVisita)});
+        visita = app.visitas[idxVisita];
+        map.setView([visita.lat, visita.lng], 15);
+        var loc = new L.LatLng(visita.estacion.lat, visita.estacion.lng);
+        if(!app.subwayMarker){
+            app.subwayMarker = L.marker(loc, {icon: subwayIcon});
+            map.addLayer(app.subwayMarker);
+        }else{
+            app.subwayMarker.setLatLng(loc);
+        }
+ 
     }
 };
 
